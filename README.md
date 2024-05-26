@@ -13,3 +13,9 @@ git clone https://github.com/pierrecarre/azure-infraascode.git
 ```
 ssh-keygen -t rsa -b 4096 -C "your_name@azshell"
 ```
+
+## Documentation de référence
+
+1. Terraform : https://developer.hashicorp.com/terraform/cli/v1.7.x/commands
+2. Provider Terraform Azure : https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs
+3. Ansible : https://docs.ansible.com/ansible/latest/index.html
