@@ -1,0 +1,2 @@
+[webapp]
+app-vm ansible_user=adminuser ansible_host=192.168.5.x
