@@ -37,3 +37,8 @@ resource "azurerm_linux_virtual_machine" "ansible-vm" {
     version   = "latest"
   }
 }
+
+resource "azurerm_network_interface_security_group_association" "ansible-vm-admin-sg-assoc" {
+  network_interface_id      = azurerm_network_interface.ansible-vm-nic.id
+  network_security_group_id = azurerm_network_security_group.admin-sg.id
+}
