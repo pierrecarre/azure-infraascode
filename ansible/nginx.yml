@@ -1,0 +1,7 @@
+---
+- name: Install NGINX using community role
+  hosts: webapp
+  become: true
+  roles:
+    - nginxinc.nginx
+    - custom-nginx

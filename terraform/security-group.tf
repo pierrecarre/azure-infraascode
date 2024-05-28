@@ -51,3 +51,17 @@ resource "azurerm_network_security_rule" "allow-ssh-from-toolzone" {
   resource_group_name         = azurerm_resource_group.fr-central-rs-group.name
   network_security_group_name = azurerm_network_security_group.app-sg.name
 }
+
+resource "azurerm_network_security_rule" "allow-http-from-rebound" {
+  name                        = "allow-http-from-rebound"
+  priority                    = 102
+  direction                   = "Inbound"
+  access                      = "Allow"
+  protocol                    = "Tcp"
+  source_port_range           = "*"
+  destination_port_range      = "80"
+  source_address_prefix       = "10.0.0.0/16"
+  destination_address_prefix  = "*"
+  resource_group_name         = azurerm_resource_group.fr-central-rs-group.name
+  network_security_group_name = azurerm_network_security_group.app-sg.name
+}

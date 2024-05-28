@@ -1,0 +1,8 @@
+---
+- name: Add hostname to NGINX landing page
+  template:
+    src: 'index.html.j2'
+    dest: '/usr/share/nginx/html/index.html'
+    owner: 'root'
+    group: 'root'
+    mode: 'u=rw,g=r,o=r'
