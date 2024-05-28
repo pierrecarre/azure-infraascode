@@ -1,5 +1,6 @@
 resource "azurerm_network_interface" "app-vm-nic" {
-  name                = "app-vm-nic"
+  count               = var.app_server_count
+  name                = "app-vm-nic${count.index}"
   location            = azurerm_resource_group.fr-central-rs-group.location
   resource_group_name = azurerm_resource_group.fr-central-rs-group.name
 
@@ -10,14 +11,25 @@ resource "azurerm_network_interface" "app-vm-nic" {
   }
 }
 
+resource "azurerm_availability_set" "app-vm-avset" {
+  name                         = "app-vm-avset"
+  location                     = azurerm_resource_group.fr-central-rs-group.location
+  resource_group_name          = azurerm_resource_group.fr-central-rs-group.name
+  platform_fault_domain_count  = 2
+  platform_update_domain_count = 2
+  managed                      = true
+}
+
 resource "azurerm_linux_virtual_machine" "app-vm" {
-  name                = "app-vm"
+  count               = var.app_server_count
+  name                = "app-vm${count.index}"
   resource_group_name = azurerm_resource_group.fr-central-rs-group.name
   location            = azurerm_resource_group.fr-central-rs-group.location
   size                = "Standard_B1ms"
   admin_username      = "adminuser"
+  availability_set_id = azurerm_availability_set.app-vm-avset.id
   network_interface_ids = [
-    azurerm_network_interface.app-vm-nic.id,
+    element(azurerm_network_interface.app-vm-nic.*.id, count.index),
   ]
 
   admin_ssh_key {
@@ -39,6 +51,7 @@ resource "azurerm_linux_virtual_machine" "app-vm" {
 }
 
 resource "azurerm_network_interface_security_group_association" "app-sg-assoc" {
-  network_interface_id      = azurerm_network_interface.app-vm-nic.id
+  count                     = var.app_server_count
+  network_interface_id      = element(azurerm_network_interface.app-vm-nic.*.id, count.index)
   network_security_group_id = azurerm_network_security_group.app-sg.id
 }
